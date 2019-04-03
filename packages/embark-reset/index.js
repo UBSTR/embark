@@ -1,12 +1,11 @@
 /* global exports process require */
 
+require('colors');
 const {join} = require('path');
 const {promisify} = require('util');
 const rimraf = promisify(require('rimraf'));
 
 const dappPath = process.env.DAPP_PATH || process.cwd();
-
-const green = (text) => '\x1b[32m' + text + '\x1b[0m';
 
 exports.paths = new Set([
   '.embark',
@@ -18,7 +17,7 @@ exports.paths = new Set([
 ]);
 
 exports.reset = async ({
-  doneMessage = green('reset done!'),
+  doneMessage = 'reset done!'.green,
   removePaths = exports.paths
 } = {}) => {
   await Promise.all(

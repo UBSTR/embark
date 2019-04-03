@@ -12,27 +12,30 @@
     "type": "git",
     "url": "https://github.com/embark-framework/embark.git"
   },
-  "bin": "./index.js",
-  "main": "./index.js",
+  "bin": "./bin.js",
+  "main": "dist/index.js",
   "files": [
-    "build",
-    "build-demo",
+    "bin.js",
     "dist",
-    "index.js"
+    "template"
   ],
   "scripts": {
     "build": "npm-run-all build:*",
     "build:src": "cross-env BABEL_ENV=node babel src --out-dir dist --root-mode upward --source-maps",
-    "build:template": "node scripts/build",
+    "build:base": "npm run reset:base && npx . embark-react-dapp build-base",
+    "build:demo": "npm run reset:demo && npx . embark-react-demo --demo build-demo",
     "ci": "npm run qa",
     "clean": "npm run reset",
-    "lint": "eslint index.js src/ template/",
+    "lint": "eslint bin.js scripts/ src/ template/",
     "package": "npm pack",
     "qa": "npm-run-all lint build test package",
-    "reset": "npx rimraf build build-demo dist create-embark-*.tgz package",
+    "reset": "npx npm-run-all reset:*",
+    "reset:src": "npx rimraf dist create-embark-*.tgz package",
+    "reset:base": "npx rimraf build-base",
+    "reset:demo": "npx rimraf build-demo",
     "start": "npm run watch",
-    "// comment": "get rid of `|| exit 0` in the test script",
-    "test": "cd build && node ../node_modules/.bin/embark test && cd ../build-demo && node ../node_modules/.bin/embark test || exit 0",
+    "test:base": "cd build-base && node ../node_modules/.bin/embark test",
+    "test:demo": "cd build-demo && node ../node_modules/.bin/embark test",
     "watch": "run-p watch:*",
     "watch:build": "npm run build:src -- --verbose --watch",
     "watch:template": "node scripts/watch"
@@ -41,16 +44,20 @@
     "extends": "../../../.eslintrc.json"
   },
   "dependencies": {
+    "@babel/runtime-corejs2": "7.3.1",
     "colors": "1.3.2",
+    "commander": "2.19.0",
+    "embark-init": "^4.0.0",
+    "npm-package-arg": "6.1.0",
     "fs-extra": "7.0.1",
-    "minimist": "1.2.0",
     "semver": "5.6.0",
     "source-map-support": "0.5.9"
   },
   "devDependencies": {
-    "create-react-app": "2.1.8",
+    "@babel/cli": "7.2.3",
+    "@babel/core": "7.2.2",
+    "cross-env": "5.2.0",
     "embark": "^4.0.0",
-    "embark-init": "^4.0.0",
     "eslint": "5.7.0",
     "npm-run-all": "4.1.5",
     "rimraf": "2.6.3"
@@ -61,6 +68,9 @@
     "yarn": ">=1.12.3"
   },
   "runtime": {
+    "dependencies": {
+      "create-react-app": "^2.1.8"
+    },
     "engines": {
       "node": ">=8.11.3"
     }

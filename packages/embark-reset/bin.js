@@ -2,4 +2,4 @@
 
 /* global module require */
 
-require('./').reset();
+require('.').reset();

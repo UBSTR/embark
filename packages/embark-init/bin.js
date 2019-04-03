@@ -2,4 +2,4 @@
 
 /* global module require */
 
-require('./').init();
+require('.').init();
