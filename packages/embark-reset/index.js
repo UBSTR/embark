@@ -1,6 +1,5 @@
 /* global exports process require */
 
-require('colors');
 const {join} = require('path');
 const {promisify} = require('util');
 const rimraf = promisify(require('rimraf'));
@@ -17,11 +16,9 @@ exports.paths = new Set([
 ]);
 
 exports.reset = async ({
-  doneMessage = 'reset done!'.green,
   removePaths = exports.paths
 } = {}) => {
   await Promise.all(
     [...removePaths].map(relative => rimraf(join(dappPath, relative)))
   );
-  console.log(doneMessage);
 };

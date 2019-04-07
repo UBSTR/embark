@@ -1,7 +1,10 @@
 let async = require('async');
 const constants = require('../lib/constants');
 const Logger = require('../lib/core/logger');
+const {init: embarkInit} = require('embark-init');
 const {reset: embarkReset} = require('embark-reset');
+const {exitWithError, logSuccess} = require('embark-cli-utils');
+const path = require('path');
 
 require('colors');
 
@@ -408,9 +411,22 @@ class EmbarkController {
 
   }
 
+  async init() {
+    try {
+      await embarkInit();
+      logSuccess(__("init done!"));
+    } catch (err) {
+      exitWithError(path.join(__dirname, '../../package.json'), null, err);
+    }
+  }
+
   async reset() {
-    const doneMessage = __("reset done!").green;
-    await embarkReset({doneMessage});
+    try {
+      await embarkReset();
+      logSuccess(__("reset done!"));
+    } catch (err) {
+      exitWithError(path.join(__dirname, '../../package.json'), null, err);
+    }
   }
 
   ejectWebpack() {
