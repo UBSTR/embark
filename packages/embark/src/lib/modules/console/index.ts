@@ -1,6 +1,7 @@
 /*globals __*/
 const env = require("../../core/env");
 const utils = require("../../utils/utils");
+const { exit } = require("embark-utils");
 const escapeHtml = require("../../utils/escapeHtml");
 import { Callback } from "embark";
 import constants from "../../constants.json";
@@ -143,7 +144,7 @@ class Console {
         __("The web3 object and the interfaces for the deployed contracts and their methods are also available"));
       return helpText.join("\n");
     } else if (["quit", "exit", "sair", "sortir", __("quit")].indexOf(cmd) >= 0) {
-      utils.exit();
+      exit();
     }
     return false;
   }
